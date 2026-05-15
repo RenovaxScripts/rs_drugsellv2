@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rs_drugsell2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app" class="hidden">
+        <div id="wrapper">
+
+            <div id="header">
+                <div id="header-left">
+                    <div id="status-dot"></div>
+                    <span id="npc-label">Mechanic</span>
+                </div>
+                <button id="btn-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="quote-row">
+                <span id="quote-text">I heard you got something good. What is it?</span>
+            </div>
+
+            <div id="panel-select">
+                <div class="sep-label" id="lbl-what">WHAT DO YOU HAVE?</div>
+                <div id="drug-list"></div>
+            </div>
+
+            <div id="panel-negotiate" class="hidden">
+
+                <div id="sel-row">
+                    <i class="fa-solid fa-leaf sel-icon" id="sel-icon-fa"></i>
+                    <div id="sel-info">
+                        <span id="sel-label">OG Kush Bag</span>
+                        <span id="sel-sub" class="mono">BASE $259</span>
+                    </div>
+                    <div id="sel-right">
+                        <span class="tiny-label">TOTAL</span>
+                        <span id="sel-total" class="mono red-text">$259</span>
+                    </div>
+                </div>
+
+                <div id="neg-grid">
+
+                    <div class="neg-card">
+                        <div class="card-head">
+                            <span class="card-key" id="lbl-chance">SUCCESS CHANCE</span>
+                            <span id="chance-pct" class="mono">52%</span>
+                        </div>
+                        <div id="chance-track">
+                            <div id="chance-fill"></div>
+                        </div>
+                        <div id="chance-tags">
+                            <span id="tag-time" class="tag"></span>
+                            <span id="tag-price" class="tag"></span>
+                            <span id="tag-level" class="tag hidden"></span>
+                        </div>
+                    </div>
+
+                    <div class="neg-card">
+                        <div class="card-head">
+                            <span class="card-key" id="lbl-price">PRICE / UNIT</span>
+                            <span id="price-val" class="mono red-text">$259</span>
+                        </div>
+                        <div id="slider-wrap">
+                            <span id="price-min" class="mono edge">$207</span>
+                            <input type="range" id="price-slider" min="207" max="311" value="259" step="1">
+                            <span id="price-max" class="mono edge">$311</span>
+                        </div>
+                    </div>
+
+                    <div class="neg-card">
+                        <div class="card-head">
+                            <span class="card-key" id="lbl-qty">QUANTITY</span>
+                            <span id="qty-stock" class="tag tag-gray mono"></span>
+                        </div>
+                        <div id="qty-row">
+                            <button class="qty-btn" id="qty-minus"><i class="fa-solid fa-minus"></i></button>
+                            <span id="qty-num" class="mono qty-big">1</span>
+                            <button class="qty-btn" id="qty-plus"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div id="qty-hint-row">
+                            <i class="fa-solid fa-circle-exclamation hint-icon"></i>
+                            <span id="qty-hint-text"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="action-row">
+                    <button id="btn-reject">
+                        <i class="fa-solid fa-ban"></i>
+                        <span id="lbl-reject">Reject</span>
+                    </button>
+                    <button id="btn-offer">
+                        <span id="lbl-offer">Make Offer</span>
+                        <i class="fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
