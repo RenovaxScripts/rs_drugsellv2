@@ -14,13 +14,19 @@ end
 
 RS.invSystem = invSystem
 
----@param item string
----@return number
 function RS.GetItemCount(item)
     if invSystem == 'ox' then
         return exports.ox_inventory:Search('count', item) or 0
     elseif invSystem == 'qb' then
-        local count = exports['qb-inventory'] and exports['qb-inventory']:GetItemCount(item) or 0
+        local QBCore = exports['qb-core']:GetCoreObject()
+        local playerData = QBCore.Functions.GetPlayerData()
+        if not playerData or not playerData.items then return 0 end
+        local count = 0
+        for _, slot in pairs(playerData.items) do
+            if slot and slot.name == item then
+                count = count + (slot.amount or 0)
+            end
+        end
         return count
     elseif invSystem == 'codem' then
         return exports['codem-inventory']:GetItemCount(item) or 0
@@ -28,7 +34,6 @@ function RS.GetItemCount(item)
     return 0
 end
 
----@return table
 function RS.GetDrugsInInventory()
     local found = {}
     for itemName, drugData in pairs(Config.Drugs) do

@@ -18,7 +18,8 @@ function RS.RemoveItem(source, item, count)
     if invSystem == 'ox' then
         return exports.ox_inventory:RemoveItem(source, item, count)
     elseif invSystem == 'qb' then
-        local Player = exports['qb-core']:GetCoreObject().Functions.GetPlayer(source)
+        local QBCore = exports['qb-core']:GetCoreObject()
+        local Player = QBCore.Functions.GetPlayer(source)
         if Player then
             return Player.Functions.RemoveItem(item, count)
         end
@@ -33,10 +34,11 @@ function RS.GetItemCountSv(source, item)
     if invSystem == 'ox' then
         local result = exports.ox_inventory:Search(source, 'count', item)
         if type(result) == 'number' then return result end
-        if type(result) == 'table' then return result[item] or 0 end
+        if type(result) == 'table'  then return result[item] or 0 end
         return 0
     elseif invSystem == 'qb' then
-        local Player = exports['qb-core']:GetCoreObject().Functions.GetPlayer(source)
+        local QBCore = exports['qb-core']:GetCoreObject()
+        local Player = QBCore.Functions.GetPlayer(source)
         if Player then
             local it = Player.Functions.GetItemByName(item)
             return it and it.amount or 0

@@ -1,52 +1,33 @@
 Config             = {}
 
--- ═══════════════════════════════════════════════════════════════
---  CORE SETTINGS
--- ═══════════════════════════════════════════════════════════════
 Config.Framework   = 'esx'       -- 'esx' | 'qbcore'
 Config.Locale      = 'cs'        -- 'cs' | 'en'
-Config.Interaction = 'target'    -- 'target' | 'textui' | 'drawtext'
+Config.Interaction = 'drawtext'    -- 'target' | 'textui' | 'drawtext'
 Config.Target      = 'ox_target' -- 'ox_target' | 'qb-target'  (only if your interaction = 'target')
 Config.Inventory   = 'auto'      -- 'ox' | 'qb' | 'codem' | 'auto'
-Config.Debug       = false       -- show debug messages in console
+Config.Debug       = false
 
--- ═══════════════════════════════════════════════════════════════
---  NEARBY PED MECHANIC
---  Player can sell drugs to ANY ped in the area
---  (except blacklisted models / types)
--- ═══════════════════════════════════════════════════════════════
 Config.NearbyPed   = {
-    scanRadius      = 5.0, --  meters – how far it scans nearby peds
-    interactKey     = 38,  -- E key (only for drawtext/textui)
+    scanRadius      = 5.0,
+    interactKey     = 38,
     targetIcon      = 'fas fa-hand-holding',
 
-    -- % chance, that NPC will IMMEDIATELY refuse (even before opening UI)
-    -- 0 = never refuses, 100 = always refuses
-    refusalChance   = 25,
+    refusalChance   = 0,
 
-    -- Types of peds that CANNOT be used
-    -- PedType: 6 = ARMY, 27 = ANIMAL...
     blacklistTypes  = { 6 },
 
-    -- Models that CANNOT be used (police, medics, army...)
     blacklistModels = {
-        -- police
         `s_m_y_cop_01`, `s_f_y_cop_01`, `s_m_y_hwaycop_01`,
         `s_m_y_sheriff_01`, `s_f_y_sheriff_01`,
         `s_m_y_swat_01`, `u_m_y_fbisuit_01`,
-        -- EMS / medics
         `s_m_m_paramedic_01`, `s_f_m_paramedic_01`,
         `s_m_m_doctor_01`, `s_f_m_nurse_01`, `s_f_y_nurse_01`,
-        -- Army
         `s_m_y_marine_01`, `s_m_y_marine_02`, `s_m_y_marine_03`,
         `s_m_y_ranger_01`, `s_f_y_ranger_01`,
-        -- Security
         `s_m_y_security_01`, `s_f_y_security_01`,
-        -- Misc
         `u_m_m_filmdirector`,
     },
 
-    -- Random buyers – label + quotes + refusal quotes assigned randomly to ped
     buyers          = {
         {
             label         = 'Taxi Driver',
@@ -129,23 +110,20 @@ Config.NearbyPed   = {
     },
 }
 
--- ═══════════════════════════════════════════════════════════════
--- DRUGS
--- ═══════════════════════════════════════════════════════════════
 Config.Drugs       = {
     ['weed_bag'] = {
-        label            = 'OG Kush Bag', -- label to diplay in the menu
-        basePrice        = 259,           -- base price of the drugData
-        priceMin         = 207,           -- minimum on slider
-        priceMax         = 311,           -- maximum on slider
-        baseChance       = 52,            -- base % chance of success
-        chancePerExtra   = 5,             -- % decrease for each extra item (above 1)
-        priceChanceBonus = 15,            -- max % bonus/penalty for price (slider influence)
-        maxUnits         = 10,            -- max units per sale
-        dayBonus         = 0,             -- % bonus for day
-        nightBonus       = 10,            -- % bonus for night
-        policeChance     = 15,            -- % chance for police alert
-        minQuantity      = 1,             -- minimum quantity
+        label            = 'OG Kush Bag',
+        basePrice        = 259,
+        priceMin         = 207,
+        priceMax         = 311,
+        baseChance       = 52,
+        chancePerExtra   = 5,
+        priceChanceBonus = 15,
+        maxUnits         = 10,
+        dayBonus         = 0,
+        nightBonus       = 10,
+        policeChance     = 15,
+        minQuantity      = 1,
     },
     ['coke_bag'] = {
         label            = 'Cocaine Bag',
@@ -205,42 +183,26 @@ Config.Drugs       = {
     },
 }
 
--- ═══════════════════════════════════════════════════════════════
---  ECONOMY
--- ═══════════════════════════════════════════════════════════════
 Config.Economy     = {
-    -- 'cash'         = cash (ESX: addMoney / QB: addMoney cash)
-    -- 'black_money'  = black money (ESX: addAccountMoney black_money)
-    -- 'bank'         = bank account
     paymentMethod = 'cash',
-    taxRate       = 0, -- % tax from sale (0 = no tax)
+    taxRate       = 0,
 }
 
--- ═══════════════════════════════════════════════════════════════
---  XP SYSTEM
--- ═══════════════════════════════════════════════════════════════
 Config.XP          = {
     enabled   = true,
-    xpPerSale = 10,                              -- XP for successful sale (1 unit)
-    xpPerUnit = 2,                               -- bonus XP for each unit sold
+    xpPerSale = 10,
+    xpPerUnit = 2,
     levels    = {
-        [1] = { xpRequired = 0, bonus = 0 },     -- 0% bonus to chance
-        [2] = { xpRequired = 100, bonus = 3 },   -- +3%
-        [3] = { xpRequired = 300, bonus = 6 },   -- +6%
-        [4] = { xpRequired = 700, bonus = 10 },  -- +10%
-        [5] = { xpRequired = 1500, bonus = 15 }, -- +15%
+        [1] = { xpRequired = 0,    bonus = 0  },
+        [2] = { xpRequired = 100,  bonus = 3  },
+        [3] = { xpRequired = 300,  bonus = 6  },
+        [4] = { xpRequired = 700,  bonus = 10 },
+        [5] = { xpRequired = 1500, bonus = 15 },
     },
 }
 
--- ═══════════════════════════════════════════════════════════════
---  POLICE DISPATCH
--- ═══════════════════════════════════════════════════════════════
 Config.Police      = {
     enabled       = true,
-    -- 'ps-dispatch'   = https://github.com/SkullFace22/ps-dispatch
-    -- 'cd_dispatch'   = codesign dispatch
-    -- 'lspd_dispatch' = lspd dispatch
-    -- false           = dispatch off
     dispatch      = 'cd_dispatch',
     jobNames      = { 'police', 'sheriff', 'bcso' },
     alertMessage  = 'Suspicious activity | Possible drug dealing',
@@ -250,18 +212,12 @@ Config.Police      = {
     alertDuration = 10000,
 }
 
--- ═══════════════════════════════════════════════════════════════
---  COOLDOWNS (in seconds)
--- ═══════════════════════════════════════════════════════════════
 Config.Cooldowns   = {
-    afterFail    = 120, -- ped refuses you after fail
-    afterSuccess = 300, -- ped has had enough after success
-    global       = 30,  -- anti-spam between attempts (server-side)
+    afterFail    = 120,
+    afterSuccess = 300,
+    global       = 30,
 }
 
--- ═══════════════════════════════════════════════════════════════
---  ANIMATIONS (plays during transaction)
--- ═══════════════════════════════════════════════════════════════
 Config.Animation   = {
     enabled  = true,
     dict     = 'mp_common',
@@ -270,9 +226,6 @@ Config.Animation   = {
     flag     = 49,
 }
 
--- ═══════════════════════════════════════════════════════════════
---  NUI
--- ═══════════════════════════════════════════════════════════════
 Config.NUI         = {
     animationsEnabled = true,
     soundEnabled      = false,

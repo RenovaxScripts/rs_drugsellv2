@@ -44,7 +44,9 @@ elseif Config.Framework == 'qbcore' then
     function RS.GetPlayerName(source)
         local p = QBCore.Functions.GetPlayer(source)
         if p then
-            return p.PlayerData.charinfo.firstname .. ' ' .. p.PlayerData.charinfo.lastname
+            local firstname = p.PlayerData.charinfo.firstname or ''
+            local lastname  = p.PlayerData.charinfo.lastname  or ''
+            return firstname .. ' ' .. lastname
         end
         return 'Unknown'
     end
@@ -52,8 +54,13 @@ elseif Config.Framework == 'qbcore' then
     function RS.AddMoney(source, method, amount)
         local p = QBCore.Functions.GetPlayer(source)
         if not p then return false end
-        local qbMethod = method == 'black_money' and 'cash' or method
-        p.Functions.AddMoney(qbMethod, amount, 'drug-sell')
+        if method == 'black_money' then
+            p.Functions.AddMoney('cash', amount, 'drug-sell')
+        elseif method == 'bank' then
+            p.Functions.AddMoney('bank', amount, 'drug-sell')
+        else
+            p.Functions.AddMoney('cash', amount, 'drug-sell')
+        end
         return true
     end
 end
