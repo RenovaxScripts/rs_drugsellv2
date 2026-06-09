@@ -2,7 +2,7 @@ Config             = {}
 
 Config.Framework   = 'esx'       -- 'esx' | 'qbcore'
 Config.Locale      = 'cs'        -- 'cs' | 'en'
-Config.Interaction = 'drawtext'    -- 'target' | 'textui' | 'drawtext'
+Config.Interaction = 'target'    -- 'target' | 'textui' | 'drawtext'
 Config.Target      = 'ox_target' -- 'ox_target' | 'qb-target'  (only if your interaction = 'target')
 Config.Inventory   = 'auto'      -- 'ox' | 'qb' | 'codem' | 'auto'
 Config.Debug       = false

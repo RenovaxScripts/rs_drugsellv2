@@ -132,13 +132,15 @@ RegisterNetEvent('rs_drugsell2:server:sell', function(data)
             SendFail(src, 'cooldown')
             return
         end
-        globalCooldowns[identifier] = now
 
         local serverCount = RS.GetItemCountSv(src, item)
         if serverCount < quantity then
             SendFail(src, 'not_enough', { item = item })
             return
         end
+
+        -- Nastaví cooldown až po úspěšném projití všech validací
+        globalCooldowns[identifier] = now
 
         local roll    = math.random(1, 100)
         local success = roll <= chance
@@ -160,20 +162,47 @@ RegisterNetEvent('rs_drugsell2:server:sell', function(data)
             local xpGained = 0
             if Config.XP.enabled then
                 xpGained = Config.XP.xpPerSale + (quantity * Config.XP.xpPerUnit)
-                GetXPData(identifier, function(xpRow)
-                    local newXP    = xpRow.xp + xpGained
-                    local newLevel = CalcLevel(newXP)
-                    local levelled = newLevel > xpRow.level
-                    SaveXP(identifier, newXP, newLevel, xpRow.total_sales + 1, xpRow.total_earned + total)
 
+                local sent = false
+                local function sendResult(xp, levelled, newLevel)
+                    if sent then return end
+                    sent = true
                     TriggerClientEvent('rs_drugsell2:client:result', src, {
                         success  = true,
                         total    = total,
-                        xp       = xpGained,
-                        levelled = levelled,
-                        newLevel = newLevel,
+                        xp       = xp or 0,
+                        levelled = levelled or false,
+                        newLevel = newLevel or 1,
                         chance   = chance,
                     })
+                end
+
+                local ok2, xpErr = pcall(function()
+                    GetXPData(identifier, function(xpRow)
+                        if not xpRow then
+                            RS.Debug('GetXPData returned nil, using defaults')
+                            sendResult(xpGained, false, 1)
+                            return
+                        end
+                        local newXP    = xpRow.xp + xpGained
+                        local newLevel = CalcLevel(newXP)
+                        local levelled = newLevel > xpRow.level
+                        SaveXP(identifier, newXP, newLevel, xpRow.total_sales + 1, xpRow.total_earned + total)
+                        sendResult(xpGained, levelled, newLevel)
+                    end)
+                end)
+
+                if not ok2 then
+                    RS.Debug('GetXPData pcall error:', tostring(xpErr))
+                    sendResult(xpGained, false, 1)
+                end
+
+                -- Fallback: pokud MySQL neodpoví do 10s, pošli result stejně
+                SetTimeout(10000, function()
+                    if not sent then
+                        RS.Debug('GetXPData timeout, sending fallback result')
+                        sendResult(xpGained, false, 1)
+                    end
                 end)
             else
                 TriggerClientEvent('rs_drugsell2:client:result', src, {
