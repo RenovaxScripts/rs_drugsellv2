@@ -139,7 +139,6 @@ RegisterNetEvent('rs_drugsell2:server:sell', function(data)
             return
         end
 
-        -- Nastaví cooldown až po úspěšném projití všech validací
         globalCooldowns[identifier] = now
 
         local roll    = math.random(1, 100)
@@ -197,7 +196,6 @@ RegisterNetEvent('rs_drugsell2:server:sell', function(data)
                     sendResult(xpGained, false, 1)
                 end
 
-                -- Fallback: pokud MySQL neodpoví do 10s, pošli result stejně
                 SetTimeout(10000, function()
                     if not sent then
                         RS.Debug('GetXPData timeout, sending fallback result')

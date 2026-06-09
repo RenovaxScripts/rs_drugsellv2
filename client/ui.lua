@@ -94,7 +94,6 @@ function RS.CloseUI(restorePed)
     SetNuiFocus(false, false)
     SendNUIMessage({ action = 'close' })
 
-    -- Vyresetůj pendingPedCooldown pokud herníč zavřel UI bez nabídnutí
     if pendingPedCooldown then
         pendingPedCooldown = nil
     end
@@ -155,7 +154,6 @@ end)
 _lastSellPed = nil
 
 RegisterNetEvent('rs_drugsell2:client:result', function(data)
-    -- Ulož ped entitu dřív, než resetujeme _lastSellPed
     local pedEntity = _lastSellPed
     _lastSellPed    = nil
 
